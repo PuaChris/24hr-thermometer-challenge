@@ -1,0 +1,10 @@
+#thermostat-mode {
+  width: 350px;
+
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.thermostat-mode__title {
+  margin: 0;
+}
