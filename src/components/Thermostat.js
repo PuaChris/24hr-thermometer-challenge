@@ -3,7 +3,7 @@ import React from 'react';
 import Sidebar from './Sidebar.js';
 import ThermostatDisplay from './ThermostatDisplay.js';
 import ThermostatMode from './ThermostatMode.js';
-import { THERMOSTAT_MODES, AUTO_MODE } from '../Constants.js';
+import { THERMOSTAT_MODES, AUTO_MODE, REGISTER_URL, UPDATE_MODE_URL} from '../helper/Constants.js';
 
 import '../styles/Styles.css';
 import '../styles/Thermostat.css'
@@ -25,7 +25,7 @@ class Thermostat extends React.Component {
     // Assume Thermostat starts in Auto mode
     this.state = {
       units: [],
-      isRegistered: false,
+      registerId: null,
       currentUnit: null,
       thermostatMode: THERMOSTAT_MODES.OFF,
     };
@@ -65,12 +65,34 @@ class Thermostat extends React.Component {
     });
   }
 
-  register() {
-    if (this.state.isRegistered === false) {
-      this.setState({
-        isRegistered: true
-      });
+  async register() {
+    console.log("Beginning registration.");
+    let { registerId, thermostatMode } = this.state;
+    let url = null;
+    let method = null;
+
+    if (this.state.registerId != null) {
+      url = new URL(`${UPDATE_MODE_URL}${registerId}/`);
+      method = "PATCH";
     }
+    else {
+      url = new URL(REGISTER_URL);
+      method = "POST";
+    }
+
+    url.search = new URLSearchParams({
+      state: thermostatMode, 
+    });
+
+    await fetch(url, {
+      method: method,
+    }).then(data => data.json())
+      .then((registerInfo) => {
+        this.setState({
+          registerId: registerInfo.uid_hash,
+        });
+      })
+    console.log(`Registration complete with ${method}.`);
   }
 
   // Future: Reduce increments to 0.1 and implement a slide bar and/or ability to hold down the button to continuously increase/decrease temperature
@@ -110,7 +132,7 @@ class Thermostat extends React.Component {
   // TODO: Set thermostat-control opacity to 30% when thermostat is turned off
 
   render() {
-    let {units, isRegistered, thermostatMode } = this.state;
+    let {units, registerId, thermostatMode } = this.state;
   
     return(
       <div className="main container">
@@ -125,10 +147,10 @@ class Thermostat extends React.Component {
                {thermostatMode === THERMOSTAT_MODES.OFF ? "Turn On" : " Turn Off"} 
             </button>
             <button 
-              className={isRegistered ? "unit-info__register unit-info__buttons registered": "unit-info__register unit-info__buttons"}
+              className="unit-info__register unit-info__buttons"
               onClick={this.register}
             > 
-              {isRegistered ? "Registration Complete" : "Register"}
+              Register
             </button>
           </div>
 

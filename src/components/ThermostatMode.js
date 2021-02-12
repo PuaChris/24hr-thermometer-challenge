@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import { AUTO_MODE, THERMOSTAT_MODES } from '../Constants.js';
+import { AUTO_MODE, THERMOSTAT_MODES } from '../helper/Constants.js';
 
 import '../styles/ThermostatMode.css';
 
@@ -8,9 +8,9 @@ const ThermostatMode = (props) => {
   const thermostatMode = props.thermostatMode;
   const switchThermostatMode = props.switchThermostatMode;
 
-  const initAuto = thermostatMode == THERMOSTAT_MODES.AUTO_STANDBY || thermostatMode == THERMOSTAT_MODES.AUTO_COOLING || thermostatMode == THERMOSTAT_MODES.AUTO_HEATING;
-  const initCooling = thermostatMode == THERMOSTAT_MODES.COOLING;
-  const initHeating = thermostatMode == THERMOSTAT_MODES.HEATING;
+  const initAuto = thermostatMode === THERMOSTAT_MODES.AUTO_STANDBY || thermostatMode === THERMOSTAT_MODES.AUTO_COOLING || thermostatMode === THERMOSTAT_MODES.AUTO_HEATING;
+  const initCooling = thermostatMode === THERMOSTAT_MODES.COOLING;
+  const initHeating = thermostatMode === THERMOSTAT_MODES.HEATING;
 
   const [isAuto, setAuto] = useState(initAuto);
   const [isCooling, setCooling] = useState(initCooling);

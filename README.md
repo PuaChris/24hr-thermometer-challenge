@@ -1,3 +1,12 @@
+# TODO
+- Make opacity of everything on the screen to 30% when power is off to signify that it cannot be used
+- Use media query to make app viewable on mobile
+- Add API and status checks and error messages
+- Display outside temperature and humidity levels 
+- Unit tests
+- Update register button so that it shows successful registration
+- Potentially safe keep API links in a secure location to prevent repeated calls and generate overhead
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

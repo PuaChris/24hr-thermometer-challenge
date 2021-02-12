@@ -47,11 +47,6 @@
   color: red;
 }
 
-.registered:hover {
-  background-color: white;
-  color: #455A6B;
-}
-
 .thermostat-control {
   flex-direction: column;
   justify-content: center;
