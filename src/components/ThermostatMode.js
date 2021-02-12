@@ -16,9 +16,11 @@ class ThermostatMode extends React.Component {
     return(
       <div className="container" id="thermostat-mode">
         <p className="thermostat-mode__title">Thermostat Mode</p>
-        <button className="thermostat-mode__auto">Auto</button>
-        <button className="thermostat-mode__cooling">Cooling</button>
-        <button className="thermostat-mode__heating">Heating</button>
+        <div className="container thermostat-mode__buttons">
+          <button className="thermostat-mode__auto">Auto</button>
+          <button className="thermostat-mode__cooling">Cooling</button>
+          <button className="thermostat-mode__heating">Heating</button>
+        </div>
       </div>
     );
   }

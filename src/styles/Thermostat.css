@@ -11,7 +11,7 @@
 
 .unit-info {
   width: 400px;
-  margin: 40px;
+  margin: 30px;
 
   align-items: center;
 }
@@ -44,7 +44,7 @@
 }
 
 .thermostat-control {
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }

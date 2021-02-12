@@ -1,12 +1,18 @@
 #thermostat-mode {
   width: 350px;
 
+  margin: 10px;
+
   align-items: center;
   justify-content: space-evenly;
 }
 
 .thermostat-mode__title {
-  margin: 20px;
+  margin: 10px;
   font-weight: 400;
   font-size: 20px;
+}
+
+.thermostat-mode__buttons {
+  flex-direction: row;
 }
