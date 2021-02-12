@@ -214,12 +214,22 @@ class Thermostat extends React.Component {
     });
   }
 
+  // Assuming Auto Mode
   increaseTemp() {
-    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp + 0.1 }));
+    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp + 0.1 }), () => {
+      if (this.state.desiredTemp >= this.state.currentData.inside.currentAverage) {
+        this.switchThermostatMode(Constants.AUTO_MODE);
+      }
+    });
   }
 
+  // Assuming Auto Mode
   decreaseTemp() {
-    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp - 0.1 }));
+    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp - 0.1 }), () => {
+      if (this.state.desiredTemp <= this.state.currentData.inside.currentAverage) {
+        this.switchThermostatMode(Constants.AUTO_MODE);
+      }
+    });
   }
 
   switchThermostatMode(newThermostatMode) {
@@ -292,6 +302,7 @@ class Thermostat extends React.Component {
             <ThermostatDisplay 
               desiredTemp={desiredTemp}
               currentData={currentData}
+              thermostatMode={thermostatMode}
               increaseTemp={this.increaseTemp}
               decreaseTemp={this.decreaseTemp}
             />

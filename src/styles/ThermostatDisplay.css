@@ -31,7 +31,7 @@
   text-align: right;
 }
 
-#thermostat-display__info__arrow {
+.thermostat-display__info__arrow {
   margin: 35px 30px 0 30px;
   
   font-size: 90px;

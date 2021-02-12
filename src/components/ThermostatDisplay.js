@@ -3,6 +3,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import ProgressBar from './ProgressBar.js';
+import * as Constants from '../helper/Constants.js';
 import '../styles/ThermostatDisplay.css';
 
 const ThermostatDisplay = (props) => {
@@ -11,13 +12,34 @@ const ThermostatDisplay = (props) => {
   const currentData = props.currentData;
   const displaySymbol = currentData.inside.displaySymbol;
   const currentTemp = currentData.inside.currentAverage;
+  const thermostatMode = props.thermostatMode;
 
   const increaseTemp = props.increaseTemp;
   const decreaseTemp = props.decreaseTemp;
 
   const percentage = Math.min((desiredTemp/35)*100, 100);
 
-  const isHeating = desiredTemp > currentTemp ? true : false;
+  let currentModeDescription = "";
+
+  switch (thermostatMode) {
+    case Constants.THERMOSTAT_MODES.AUTO_COOLING:
+      currentModeDescription = "Auto Cooling Mode";
+      break; 
+    case Constants.THERMOSTAT_MODES.AUTO_HEATING:
+      currentModeDescription = "Auto Heating Mode";
+      break;
+    case Constants.THERMOSTAT_MODES.AUTO_STANDBY:
+      currentModeDescription = "Stand By Mode";
+      break;
+    case Constants.THERMOSTAT_MODES.COOLING:
+      currentModeDescription = "Cooling Mode";
+      break;
+    case Constants.THERMOSTAT_MODES.HEATING:
+      currentModeDescription = "Heating Mode";
+      break;
+    default:
+  }
+
 
   return (
     <div className="container" id="thermostat-display">
@@ -28,8 +50,7 @@ const ThermostatDisplay = (props) => {
           <span className="thermostat-display__info__value">{currentTemp}{displaySymbol}</span>
         </div>
 
-        {/* //TODO: Change arrow for different thermostat states (e.g. auto heating, cooling, etc.) */}
-        <FontAwesomeIcon id="thermostat-display__info__arrow" className={isHeating ? "heat" : "cool"}  icon="long-arrow-alt-right"/>
+        <FontAwesomeIcon className="thermostat-display__info__arrow" icon="long-arrow-alt-right"/>
 
         <div className="container thermostat-display__info__temp">
           <span className="thermostat-display__info__title">Set To</span>
@@ -54,7 +75,7 @@ const ThermostatDisplay = (props) => {
           <FontAwesomeIcon icon="plus" />
         </button>
       </div>
-      <span>Auto Heating</span>
+      <span>{currentModeDescription}</span>
 
     </div>
   );
