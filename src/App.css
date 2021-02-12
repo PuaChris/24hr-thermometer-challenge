@@ -8,6 +8,6 @@
 
 .App-header {
   background-color: white;
-  min-height: 10vh;
-  border: 2px solid black;
+  min-height: 70px;
+  border-bottom: 1px solid #D6D6D6;
 }

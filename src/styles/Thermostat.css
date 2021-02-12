@@ -3,31 +3,44 @@
 }
 
 #thermostat {
-  min-height: 100vh;
+  min-height: 90vh;
   width: 100%;
 
   align-items: center;
 }
 
-
 .unit-info {
   width: 400px;
-  margin: 30px;
+  margin: 40px;
 
   align-items: center;
 }
 
 .unit-info__title {
-  margin: 0;
+  margin: 15px;
+  font-weight: 400;
+  font-size: 25px;
 }
 
 /* On/Off button */
+.on-off__button:focus{
+  background-color: white;
+}
+
 .on {
- 
+  color: #02BCC7;
+}
+
+.on:focus {
+  color: #02BCC7;
 }
 
 .off {
+  color: red;
+}
 
+.off:focus {
+  color: red;
 }
 
 .thermostat-control {

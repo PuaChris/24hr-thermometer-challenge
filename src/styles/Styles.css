@@ -5,6 +5,7 @@
 * { 
   box-sizing: border-box; 
   font-family: 'Roboto', sans-serif;
+  margin: 0;
 } 
 
 header {
@@ -17,13 +18,36 @@ body {
 } 
 
 
+
 button {
   background-color: white;
 
-  width: 150px;
+  width: 200px;
   height: 40px;
 
   margin: 10px;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  border: none;
+  border-radius: 3px;
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+  transition: 120ms ease-in-out;
+
+  color: #455A6B;
+}
+
+button:hover{
+  background-color: #02BCC7;
+  color: white;
+  transition: 120ms ease-in-out;
+}
+
+button:focus{
+  outline: none;
 }
 
 .container {

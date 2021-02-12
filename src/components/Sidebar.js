@@ -3,18 +3,21 @@ import React from 'react';
 import '../styles/Styles.css';
 import '../styles/Sidebar.css';
 
-class Sidebar extends React.Component{
-  constructor(props){
-    super(props);
+function Sidebar(props) {
 
-  }
-  render() {
-    return(
-      <div className="container sidebar">
-        This is a sidebar
-      </div>
-    )
-  }
+  const units = props.units;
+  
+
+  return(
+    <ul className="sidebar container">
+      <span className="sidebar__title">Building Units ({units.length})</span>
+      {units.map((unit) => (
+        <button className="sidebar-units">
+          {unit.name}
+        </button>
+      ))}
+    </ul>
+  )
 }
 
 export default Sidebar;

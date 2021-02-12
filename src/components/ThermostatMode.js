@@ -15,7 +15,7 @@ class ThermostatMode extends React.Component {
   render() {
     return(
       <div className="container" id="thermostat-mode">
-        <h1 className="thermostat-mode__title">Thermostat Mode</h1>
+        <p className="thermostat-mode__title">Thermostat Mode</p>
         <button className="thermostat-mode__auto">Auto</button>
         <button className="thermostat-mode__cooling">Cooling</button>
         <button className="thermostat-mode__heating">Heating</button>
