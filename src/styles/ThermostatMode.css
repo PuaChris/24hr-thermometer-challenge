@@ -16,3 +16,8 @@
 .thermostat-mode__buttons {
   flex-direction: row;
 }
+
+.mode_focus {
+  background-color: #02BCC7;
+  color: white;
+}

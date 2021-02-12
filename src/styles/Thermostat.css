@@ -10,7 +10,7 @@
 }
 
 .unit-info {
-  width: 400px;
+  width: 250px;
   margin: 30px;
 
   align-items: center;
@@ -22,8 +22,12 @@
   font-size: 25px;
 }
 
+.unit-info__buttons {
+  width: 175px;
+}
+
 /* On/Off button */
-.on-off__button:focus{
+.unit-info__power:focus{
   background-color: white;
 }
 
@@ -41,6 +45,11 @@
 
 .off:focus {
   color: red;
+}
+
+.registered:hover {
+  background-color: white;
+  color: #455A6B;
 }
 
 .thermostat-control {

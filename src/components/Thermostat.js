@@ -3,7 +3,7 @@ import React from 'react';
 import Sidebar from './Sidebar.js';
 import ThermostatDisplay from './ThermostatDisplay.js';
 import ThermostatMode from './ThermostatMode.js';
-import { THERMOSTAT_MODES } from '../Constants.js';
+import { THERMOSTAT_MODES, AUTO_MODE } from '../Constants.js';
 
 import '../styles/Styles.css';
 import '../styles/Thermostat.css'
@@ -22,14 +22,16 @@ class Thermostat extends React.Component {
   constructor(props) {
     super(props);
 
+    // Assume Thermostat starts in Auto mode
     this.state = {
-      power: false,
       units: [],
+      isRegistered: false,
       currentUnit: null,
-      thermostatMode: null,
+      thermostatMode: THERMOSTAT_MODES.OFF,
     };
 
     this.activate = this.activate.bind(this);
+    this.register = this.register.bind(this);
     this.switchThermostatMode = this.switchThermostatMode.bind(this);
   }
 
@@ -48,11 +50,27 @@ class Thermostat extends React.Component {
 
   // To turn on thermometer. No other interactions can happen unless it is on
   activate() {
-    this.setState(
-      (prevState) => ({
-        power: !prevState.power,
-      })
-    );
+    let currentThermostatMode = this.state.thermostatMode;
+    let newThermostatMode = THERMOSTAT_MODES.OFF;
+
+    if (currentThermostatMode === THERMOSTAT_MODES.OFF){
+      newThermostatMode = THERMOSTAT_MODES.AUTO_STANDBY;
+    }
+    else {
+      newThermostatMode = THERMOSTAT_MODES.OFF;
+    }
+
+    this.setState({thermostatMode: newThermostatMode}, () => {
+      console.log(`New thermostat mode is: ${newThermostatMode}`);
+    });
+  }
+
+  register() {
+    if (this.state.isRegistered === false) {
+      this.setState({
+        isRegistered: true
+      });
+    }
   }
 
   // Future: Reduce increments to 0.1 and implement a slide bar and/or ability to hold down the button to continuously increase/decrease temperature
@@ -72,7 +90,7 @@ class Thermostat extends React.Component {
 
     this.setState({ thermostatMode: newThermostatMode}, () => {
       switch(newThermostatMode){
-        case THERMOSTAT_MODES.AUTO:
+        case AUTO_MODE:
           console.log("Auto mode activated.");
           break;
         case THERMOSTAT_MODES.COOLING:
@@ -85,14 +103,14 @@ class Thermostat extends React.Component {
           console.log("Nothing happened");
       }
     });
-    
+
     return;
   }
 
   // TODO: Set thermostat-control opacity to 30% when thermostat is turned off
 
   render() {
-    let { power, units } = this.state;
+    let {units, isRegistered, thermostatMode } = this.state;
   
     return(
       <div className="main container">
@@ -101,16 +119,25 @@ class Thermostat extends React.Component {
           <div className="unit-info container">
             <p className="unit-info__title"> Unit 100 - Thermostat</p>
             <button 
-              className={!power ? "on-off__button on" : "on-off__button off"}
+              className={thermostatMode === THERMOSTAT_MODES.OFF ? "unit-info__power unit-info__buttons on" : "unit-info__power unit-info__buttons off"}
               onClick={this.activate}  
             >
-               {!power ? "Turn On" : " Turn Off"} 
+               {thermostatMode === THERMOSTAT_MODES.OFF ? "Turn On" : " Turn Off"} 
+            </button>
+            <button 
+              className={isRegistered ? "unit-info__register unit-info__buttons registered": "unit-info__register unit-info__buttons"}
+              onClick={this.register}
+            > 
+              {isRegistered ? "Registration Complete" : "Register"}
             </button>
           </div>
 
           <div className="container thermostat-control">
             <ThermostatDisplay/>
-            <ThermostatMode switchThermostatMode={this.switchThermostatMode}/>
+            <ThermostatMode 
+              thermostatMode={thermostatMode}
+              switchThermostatMode={this.switchThermostatMode}
+            />
           </div>
         </div>
       </div>
