@@ -172,9 +172,11 @@ class Thermostat extends React.Component {
   // Retrieves data from the last 15 minutes and calculates the average temperature. Default call is for indoor temperature
   async getCurrentTemp() {
     console.log(`Retrieving current data`);
-    const humidityUrl = new URL(`${Constants.CURRENT_TEMP_URL}humidity-1`);
-    const insideTempUrl = new URL(`${Constants.CURRENT_TEMP_URL}temperature-1`);
-    const outsideTempUrl = new URL(`${Constants.CURRENT_TEMP_URL}outdoor-1`);
+    const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+
+    const humidityUrl = new URL(`${PROXY_URL}${Constants.CURRENT_TEMP_URL}humidity-1`);
+    const insideTempUrl = new URL(`${PROXY_URL}${Constants.CURRENT_TEMP_URL}temperature-1`);
+    const outsideTempUrl = new URL(`${PROXY_URL}${Constants.CURRENT_TEMP_URL}outdoor-1`);
 
     const humidityPromise = this.fetchCurrentTemp(Constants.SENSOR_TYPE.HUMIDITY, humidityUrl);
     const insidePromise = this.fetchCurrentTemp(Constants.SENSOR_TYPE.INSIDE, insideTempUrl);
