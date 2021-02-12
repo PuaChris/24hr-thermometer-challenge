@@ -6,6 +6,7 @@ import '../styles/ThermostatMode.css';
 
 const ThermostatMode = (props) => {
   const thermostatMode = props.thermostatMode;
+  const currentData = props.currentData;
   const switchThermostatMode = props.switchThermostatMode;
 
   const initAuto = thermostatMode === THERMOSTAT_MODES.AUTO_STANDBY || thermostatMode === THERMOSTAT_MODES.AUTO_COOLING || thermostatMode === THERMOSTAT_MODES.AUTO_HEATING;
@@ -24,6 +25,9 @@ const ThermostatMode = (props) => {
         setHeating(false);
         break;
       case THERMOSTAT_MODES.COOLING:
+        if (currentData.outside.currentAverage < 0){
+          return;
+        }
         setAuto(false);
         setCooling(true);
         setHeating(false);

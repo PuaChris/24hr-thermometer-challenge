@@ -30,6 +30,7 @@ class Thermostat extends React.Component {
       currentUnit: null,
       thermostatMode: Constants.THERMOSTAT_MODES.OFF,
       recentTimestamp: null,
+      desiredTemp: 23.0,
       currentData: {
         humidity: null,
         inside: null,
@@ -44,8 +45,10 @@ class Thermostat extends React.Component {
     this.switchThermostatMode = this.switchThermostatMode.bind(this);
   }
 
-  // Retrieve indoor and outdoor temperature data
   componentDidMount() {
+    // Retrieve indoor and outdoor temperature data
+    this.getCurrentTemp();
+
     // Display units on sidebar for demonstration purposes
     let newUnits = [];
     for (let i = 0; i < 10; i++) {
@@ -55,19 +58,23 @@ class Thermostat extends React.Component {
     this.setState({
       units: newUnits,
     });
-
-    this.getCurrentTemp();
-
   }
 
   // Turns on thermometer. No other interactions except for registration can happen unless it is on
   activate() {
     let currentThermostatMode = this.state.thermostatMode;
+    let currentData = this.state.currentData;
     let newThermostatMode = Constants.THERMOSTAT_MODES.OFF;
+
+    // Preventative to initializing components without data being retrieved
+    if (!currentData) {
+      return;
+    }
 
     if (currentThermostatMode === Constants.THERMOSTAT_MODES.OFF) {
       newThermostatMode = Constants.THERMOSTAT_MODES.AUTO_STANDBY;
     }
+
     else {
       newThermostatMode = Constants.THERMOSTAT_MODES.OFF;
     }
@@ -114,6 +121,7 @@ class Thermostat extends React.Component {
   async fetchCurrentTemp(sensorType, url) {
     const method = "GET";
     let recentTimestamp = this.state.recentTimestamp;
+    let newData = {};
 
     // Only make call if at least 5 minutes has elapsed to prevent spamming of requests.
     if (recentTimestamp === null || moment().diff(recentTimestamp, 'minutes') > 5) {
@@ -132,38 +140,73 @@ class Thermostat extends React.Component {
       }).then(data => data.json())
         .then((data) => {
           // Compute average 
-          let currentData = 0;
+          let currentAverage = 0;
           data.data_points.forEach(dataPoint => {
             // toFixed converts a decimal back into a string
-            currentData += parseFloat(parseFloat(dataPoint.value).toFixed(1));
+            currentAverage += parseFloat(parseFloat(dataPoint.value).toFixed(1));
           });
 
-          currentData = parseFloat(parseFloat(currentData / data.data_points.length).toFixed(1));
+          currentAverage = parseFloat(parseFloat(currentAverage / data.data_points.length).toFixed(1));
 
-          this.setState({
-            recentTimestamp: moment().format(),
-            [sensorType]: {
-              currentTemp: currentData,
-              displaySymbol: data.display_symbol,
-            },
-          }, () => console.log(`Retrieved ${sensorType} data with an average of ${currentData}${data.display_symbol}`));
+          newData = {
+            sensorType: sensorType,
+            currentAverage: currentAverage,
+            displaySymbol: data.display_symbol,
+          };
+
+            console.log(`Retrieved ${sensorType} data with an average of ${currentAverage}${data.display_symbol}`);
         });
-      return;
+        return newData;
+    }
+    else {
+      console.log(`Data is still too recent to retrieve new data`);
+      return this.state.currentData[sensorType];
     }
   }
 
   // Retrieves data from the last 15 minutes and calculates the average temperature. Default call is for indoor temperature
-  getCurrentTemp() {
+  async getCurrentTemp() {
     console.log(`Retrieving current data`);
     const humidityUrl = new URL(`${Constants.CURRENT_TEMP_URL}humidity-1`);
     const insideTempUrl = new URL(`${Constants.CURRENT_TEMP_URL}temperature-1`);
     const outsideTempUrl = new URL(`${Constants.CURRENT_TEMP_URL}outdoor-1`);
 
-    this.fetchCurrentTemp(Constants.SENSOR_TYPE.HUMIDITY, humidityUrl);
-    this.fetchCurrentTemp(Constants.SENSOR_TYPE.INSIDE, insideTempUrl);
-    this.fetchCurrentTemp(Constants.SENSOR_TYPE.OUTSIDE, outsideTempUrl);
+    const humidityPromise = this.fetchCurrentTemp(Constants.SENSOR_TYPE.HUMIDITY, humidityUrl);
+    const insidePromise = this.fetchCurrentTemp(Constants.SENSOR_TYPE.INSIDE, insideTempUrl);
+    const outsidePromise = this.fetchCurrentTemp(Constants.SENSOR_TYPE.OUTSIDE, outsideTempUrl);
 
-    console.log(`Current data retrieved`);
+    let humidityData = null;
+    let insideData = null;
+    let outsideData = null;
+
+    await Promise.all([humidityPromise, insidePromise, outsidePromise]).then((results) => {
+      results.forEach((result) => {
+        switch(result.sensorType){
+          case Constants.SENSOR_TYPE.HUMIDITY:
+            humidityData = result;
+            break;
+          case Constants.SENSOR_TYPE.INSIDE:
+            insideData = result;
+            break;
+          case Constants.SENSOR_TYPE.OUTSIDE:
+            outsideData = result;
+            break;
+        }
+        console.log(result);
+      });
+      console.log(`Retrieved all current data`);
+    });
+
+
+    // Reset timestamp
+    this.setState({
+      recentTimestamp: moment().format(),
+      currentData: {
+        humidity: humidityData,
+        inside: insideData,
+        outside: outsideData
+      }
+    });
   }
 
   increaseDesiredTemp() {
@@ -200,7 +243,7 @@ class Thermostat extends React.Component {
   }
 
   render() {
-    let { units, thermostatMode } = this.state;
+    let { units, desiredTemp, currentData, thermostatMode } = this.state;
 
     return (
       <div className="main container">
@@ -221,14 +264,20 @@ class Thermostat extends React.Component {
               Register
             </button>
           </div>
-
+          {thermostatMode === Constants.THERMOSTAT_MODES.OFF ? "" : 
           <div className="container thermostat-control">
-            <ThermostatDisplay />
+            <ThermostatDisplay 
+              desiredTemp={desiredTemp}
+              currentData={currentData}
+            />
             <ThermostatMode
               thermostatMode={thermostatMode}
+              currentData={currentData}
+              getCurrentTemp={this.getCurrentTemp}
               switchThermostatMode={this.switchThermostatMode}
             />
           </div>
+          }
         </div>
       </div>
     );

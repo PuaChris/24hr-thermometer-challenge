@@ -6,7 +6,11 @@ import ProgressBar from './ProgressBar.js';
 import '../styles/ThermostatDisplay.css';
 
 const ThermostatDisplay = (props) => {
-  const value = 66;
+  // Adding one decimal place to match the current data decimal notation
+  const desiredTemp = parseFloat(props.desiredTemp).toFixed(1);
+  const currentData = props.currentData;
+
+  const value = 66
 
   return (
     <div className="container" id="thermostat-display">
@@ -14,7 +18,7 @@ const ThermostatDisplay = (props) => {
       <div className="container thermostat-display__info">
         <div className="container thermostat-display__info__temp">
           <span className="thermostat-display__info__title">Inside</span>
-          <span className="thermostat-display__info__value">20{'\u00b0'} C</span>
+          <span className="thermostat-display__info__value">{currentData.inside.currentAverage}{currentData.inside.displaySymbol}</span>
         </div>
 
         {/* //TODO: Change arrow for different thermostat states (e.g. auto heating, cooling, etc.) */}
@@ -22,7 +26,7 @@ const ThermostatDisplay = (props) => {
 
         <div className="container thermostat-display__info__temp">
           <span className="thermostat-display__info__title">Set To</span>
-          <span className="thermostat-display__info__value">23{'\u00b0'} C</span>
+          <span className="thermostat-display__info__value">{desiredTemp}{currentData.inside.displaySymbol} </span>
         </div>
       </div>
 
@@ -32,7 +36,7 @@ const ThermostatDisplay = (props) => {
         </button>
 
         <ProgressBar percentage={value} />
-        
+
         <button className="thermostat-display__button plus">
           <FontAwesomeIcon icon="plus" />
         </button>
