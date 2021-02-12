@@ -17,7 +17,7 @@ const ThermostatDisplay = (props) => {
           <span className="thermostat-display__info__value">20{'\u00b0'} C</span>
         </div>
 
-        {/* //TODO: Put in modifer for different thermostat states (e.g. auto heating, cooling, etc.) */}
+        {/* //TODO: Change arrow for different thermostat states (e.g. auto heating, cooling, etc.) */}
         <FontAwesomeIcon className="thermostat-display__info__arrow" icon="long-arrow-alt-right" />
 
         <div className="container thermostat-display__info__temp">
@@ -25,11 +25,14 @@ const ThermostatDisplay = (props) => {
           <span className="thermostat-display__info__value">23{'\u00b0'} C</span>
         </div>
       </div>
+
       <div className="container thermostat-display__modifier">
         <button className="thermostat-display__button minus">
           <FontAwesomeIcon icon="minus" />
         </button>
+
         <ProgressBar percentage={value} />
+        
         <button className="thermostat-display__button plus">
           <FontAwesomeIcon icon="plus" />
         </button>

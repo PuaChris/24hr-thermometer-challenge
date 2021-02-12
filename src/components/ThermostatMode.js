@@ -34,6 +34,7 @@ const ThermostatMode = (props) => {
         setHeating(true);
         break;
       case THERMOSTAT_MODES.OFF:
+      default:
         setAuto(false);
         setCooling(false);
         setHeating(false);
