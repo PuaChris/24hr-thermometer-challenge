@@ -6,6 +6,8 @@
   box-sizing: border-box; 
   font-family: 'Roboto', sans-serif;
   margin: 0;
+
+  color: #455A6B;
 } 
 
 header {
@@ -40,7 +42,7 @@ button {
 
   transition: 120ms ease-in-out;
 
-  color: #455A6B;
+  
 }
 
 button:hover{

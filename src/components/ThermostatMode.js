@@ -1,29 +1,38 @@
 import React from 'react';
 
+import { THERMOSTAT_MODES } from '../Constants.js';
+
 import '../styles/ThermostatMode.css';
 
-class ThermostatMode extends React.Component {
-  constructor(props) {
-    super(props);
+const ThermostatMode = (props) => {
+  const switchThermostatMode = props.switchThermostatMode;
 
-    this.state = {
-      
-
-    };
-  }
-
-  render() {
-    return(
-      <div className="container" id="thermostat-mode">
-        <p className="thermostat-mode__title">Thermostat Mode</p>
-        <div className="container thermostat-mode__buttons">
-          <button className="thermostat-mode__auto">Auto</button>
-          <button className="thermostat-mode__cooling">Cooling</button>
-          <button className="thermostat-mode__heating">Heating</button>
-        </div>
+  return(
+    <div className="container" id="thermostat-mode">
+      <p className="thermostat-mode__title">Thermostat Mode</p>
+      <div className="container thermostat-mode__buttons">
+        <button 
+          className="thermostat-mode__auto"
+          onClick={() => switchThermostatMode(THERMOSTAT_MODES.AUTO)}
+        >  
+            Auto
+        </button>
+        <button 
+          className="thermostat-mode__cooling"
+          onClick={() => switchThermostatMode(THERMOSTAT_MODES.COOLING)}
+        >
+          Cooling
+        </button>
+        <button 
+          className="thermostat-mode__heating"
+          onClick={() => switchThermostatMode(THERMOSTAT_MODES.HEATING)}
+        >
+          Heating
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
 
 export default ThermostatMode;

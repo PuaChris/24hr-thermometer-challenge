@@ -12,7 +12,10 @@ function Sidebar(props) {
     <ul className="sidebar container">
       <span className="sidebar__title">Building Units ({units.length})</span>
       {units.map((unit) => (
-        <button className="sidebar-units">
+        <button 
+          key={unit.id}
+          className="sidebar-units"
+        >
           {unit.name}
         </button>
       ))}

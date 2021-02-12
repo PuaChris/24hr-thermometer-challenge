@@ -14,7 +14,7 @@ const ThermostatDisplay = (props) => {
       <div className="container thermostat-display__info">
         <div className="container thermostat-display__info__temp">
           <span className="thermostat-display__info__title">Inside</span>
-          <span className="thermostat-display__info__value">20{'\u00b0'}</span>
+          <span className="thermostat-display__info__value">20{'\u00b0'} C</span>
         </div>
 
         {/* //TODO: Put in modifer for different thermostat states (e.g. auto heating, cooling, etc.) */}
@@ -22,7 +22,7 @@ const ThermostatDisplay = (props) => {
 
         <div className="container thermostat-display__info__temp">
           <span className="thermostat-display__info__title">Set To</span>
-          <span className="thermostat-display__info__value">23{'\u00b0'}</span>
+          <span className="thermostat-display__info__value">23{'\u00b0'} C</span>
         </div>
       </div>
       <div className="container thermostat-display__modifier">
