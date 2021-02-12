@@ -17,6 +17,8 @@ const ThermostatMode = (props) => {
   const [isCooling, setCooling] = useState(initCooling);
   const [isHeating, setHeating] = useState(initHeating);
 
+
+  // Do not like having two separate switch statements to manage modes
   const handleThermostatMode = (newThermostatMode) => {
     switch(newThermostatMode) {
       case AUTO_MODE:
@@ -26,6 +28,7 @@ const ThermostatMode = (props) => {
         break;
       case THERMOSTAT_MODES.COOLING:
         if (currentData.outside.currentAverage < 0){
+          console.log("Outside temperature is lower than inside temperature")
           return;
         }
         setAuto(false);

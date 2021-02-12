@@ -40,9 +40,7 @@ button {
 
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-  transition: 120ms ease-in-out;
-
-  
+  transition: 120ms ease-in-out;  
 }
 
 button:hover{
@@ -80,3 +78,4 @@ button:focus{
   top: 3px;
   position: relative;
 }
+

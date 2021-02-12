@@ -31,10 +31,18 @@
   text-align: right;
 }
 
-.thermostat-display__info__arrow {
+#thermostat-display__info__arrow {
   margin: 35px 30px 0 30px;
   
   font-size: 90px;
+}
+
+.fa-long-arrow-alt-right .cool  {
+  color: #5DCCF6;
+}
+
+.fa-long-arrow-alt-right .heat {
+  color: #E45E4D;
 }
 
 .thermostat-display__modifier {

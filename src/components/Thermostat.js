@@ -23,10 +23,12 @@ class Thermostat extends React.Component {
   constructor(props) {
     super(props);
 
+    const registerId = localStorage.getItem("thermostatId");
+
     // Assume Thermostat starts in Auto mode
     this.state = {
       units: [],
-      registerId: null,
+      registerId: registerId ? registerId : null,
       currentUnit: null,
       thermostatMode: Constants.THERMOSTAT_MODES.OFF,
       recentTimestamp: null,
@@ -42,6 +44,8 @@ class Thermostat extends React.Component {
     this.register = this.register.bind(this);
     this.fetchCurrentTemp = this.fetchCurrentTemp.bind(this);
     this.getCurrentTemp = this.getCurrentTemp.bind(this);
+    this.increaseTemp = this.increaseTemp.bind(this);
+    this.decreaseTemp = this.decreaseTemp.bind(this);
     this.switchThermostatMode = this.switchThermostatMode.bind(this);
   }
 
@@ -113,8 +117,9 @@ class Thermostat extends React.Component {
         this.setState({
           registerId: registerInfo.uid_hash,
         });
-      })
-    console.log(`Registration complete with ${method}.`);
+        localStorage.setItem("thermostatId", registerInfo.uid_hash);
+        console.log(`Registration complete with ${method}. ID of thermostat is ${registerInfo.uid_hash}`);
+      });
   }
 
   // Executes the actual GET requests
@@ -209,35 +214,53 @@ class Thermostat extends React.Component {
     });
   }
 
-  increaseDesiredTemp() {
-    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp + 1 }));
+  increaseTemp() {
+    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp + 0.1 }));
   }
 
-  decreaseDesiredTemp() {
-    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp - 1 }));
+  decreaseTemp() {
+    this.setState((prevState) => ({ desiredTemp: prevState.desiredTemp - 0.1 }));
   }
 
   switchThermostatMode(newThermostatMode) {
+    const thermostatMode = this.state.thermostatMode;
+    const desiredTemp = this.state.desiredTemp;
+    const currentData = this.state.currentData;
+
     // Do nothing if no change in mode
-    if (this.state.thermostatMode === newThermostatMode) {
+    if (thermostatMode === newThermostatMode) {
+      console.log("No change occurred");
       return;
     }
 
-    this.setState({ thermostatMode: newThermostatMode }, () => {
-      switch (newThermostatMode) {
-        case Constants.AUTO_MODE:
-          console.log("Auto mode activated.");
-          break;
-        case Constants.THERMOSTAT_MODES.COOLING:
-          console.log("Cooling mode activated.");
-          break;
-        case Constants.THERMOSTAT_MODES.HEATING:
-          console.log("Heating mode activated.");
-          break;
-        default:
-          console.log("Nothing happened");
-      }
-    });
+
+    switch (newThermostatMode) {
+      // Break down into my specific auto mode
+      case Constants.AUTO_MODE:
+        if (desiredTemp < currentData.inside.currentAverage && currentData.outside.currentAverage >= 0){
+          newThermostatMode = Constants.THERMOSTAT_MODES.AUTO_COOLING;
+          console.log("Auto cooling mode activated.");
+        }
+        else if (desiredTemp > currentData.inside.currentAverage){
+          newThermostatMode = Constants.THERMOSTAT_MODES.AUTO_HEATING;
+          console.log("Auto heating mode activated.");
+        }
+        else {
+          newThermostatMode = Constants.THERMOSTAT_MODES.AUTO_STANDBY;
+          console.log("Auto standby mode activated.");
+        }
+        break;
+      case Constants.THERMOSTAT_MODES.COOLING:
+        console.log("Cooling mode activated.");
+        break;
+      case Constants.THERMOSTAT_MODES.HEATING:
+        console.log("Heating mode activated.");
+        break;
+      default:
+        console.log("No change occurred");
+    }
+
+    this.setState({thermostatMode: newThermostatMode});
 
     return;
   }
@@ -269,6 +292,8 @@ class Thermostat extends React.Component {
             <ThermostatDisplay 
               desiredTemp={desiredTemp}
               currentData={currentData}
+              increaseTemp={this.increaseTemp}
+              decreaseTemp={this.decreaseTemp}
             />
             <ThermostatMode
               thermostatMode={thermostatMode}

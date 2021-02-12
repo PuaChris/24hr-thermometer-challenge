@@ -6,9 +6,10 @@
 - Unit tests
 - Update register button so that it shows successful registration
 - Potentially safe keep API links in a secure location to prevent repeated calls and generate overhead
-- Reduce temperature increments to 0.1 and implement a slide bar and/or ability to hold down the button to continuously increase/decrease temperature
+- Implement a slide bar and/or ability to hold down the button to continuously increase/decrease temperature for better UX
 - Take into account of other timezones when retrieving current temperature
 - Include separate temperature and humidity data into each separate unit
+- Change the color of the middle arrow to correspond to heating/cooling
 
 # Getting Started with Create React App
 
