@@ -34,19 +34,6 @@ The following are the items on the description that I completed:
     - and the current temperature in the room is above the desired temperature set by a user, 
     - and the current outside temperature is below 0˚C
 
-  
-
-
-# Notes
-When trying to query for the API, I noticed that one of the links provided in the description was not making the requests as expected, in particular: http://api-staging.paritygo.com/sensors/api/sensors/humidity?begin=2021-02-12T04:55:24-05:00&end=2021-02-12T05:10:24-05:00. I ended up discovering that there was a typo in the link after debugging through the 404 page on Parity and Postman:
-
-
-
-![image-20210212074736057](README.assets/image-20210212074736057.png)
-
-![image-20210212074742122](README.assets/image-20210212074742122.png)
-
-I realized that there was a `<slug:slug>` attribute that wasn't mentioned in the description but showed up in my response from Postman. It turns out the word "humidity" in the API should be "humidity-1" just like the slug. It's a bit late but I wanted to point out the miscommunication for your future interviewees. 
 
 
 
