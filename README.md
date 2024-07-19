@@ -34,9 +34,6 @@ The following are the items on the description that I completed:
     - and the current temperature in the room is above the desired temperature set by a user, 
     - and the current outside temperature is below 0˚C
 
-
-
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
